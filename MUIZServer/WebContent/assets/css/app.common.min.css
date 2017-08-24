@@ -1,0 +1,364 @@
+/********************************************
+ * @auth: zhongwanshan
+ * @des: 千裙百色手机页面样式
+ * @email: 764341548@qq.com
+ ********************************************/
+ html,
+ body {
+	 font-family: "Helvetica Neue", Helvetica, STHeiTi, "微软雅黑", sans-serif;
+ }
+ 
+ /* 页面头样式
+ ----------------------------------*/
+ .header-wrap {
+	 position: fixed;
+	 z-index: 10000000000;
+	 width: 100%;
+	 height: 44px;
+	 background-color: #EB767E;
+	 border-bottom: 1px solid #EB767E;
+ }
+  .header-wrap h1 {
+	  height: 44px;
+	  line-height: 44px;
+	  text-align: center;
+	  font-size: 16px;
+	  color: #FFF;
+	  margin: 0;
+	  letter-spacing: 2px;
+	  font-weight: normal;
+  }
+  .userCenter,
+  .classType {
+	  position: absolute;
+	  z-index: 10000000;
+	  left: 0;
+	  top: 0;
+	  width: 30px;
+	  height: 44px;
+	  line-height: 44px;
+	  color: #FFF;
+	  font-size: 20px;
+	  padding-left: 10px;
+  }
+   .userCenter:hover,
+   .classType:hover {
+	   color: #F9BFC3;
+   }
+   .userCenter  {
+	   left: auto;
+	   right: 0;
+	   padding-left: 0;
+	   padding-right: 10px;
+   }
+   
+/*  页脚样式
+-------------------------------*/
+.footer-wrap {
+	position: fixed;
+	z-index: 1000000000000000;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	border-top: 1px solid #F5D1D3;
+	background-color: #F7E9EA;
+}
+.footer-box {
+	overflow: hidden;
+}
+.footer-box a {
+	float: left;
+	width: 25%;
+	height: 44px;
+	padding: 4px 0;
+	text-align: center;
+	text-decoration: none;
+}
+.footer-box a .footer-icon {
+	font-size: 16px;
+	color: #FB7F7B;
+}
+.footer-box a .footer-txt {
+	display: block;
+	font-size: 14px;
+	color: #FB7F7B;
+}
+   
+/* 广告专区
+----------------------------*/
+.bannner-wrap {
+    padding-top: 44px;
+	height: 244px;
+	overflow: hidden;
+}
+.banner { 
+	position: relative; 
+	overflow: auto; 
+}
+.banner ul {
+	padding: 0;
+	margin: 0;
+}
+.banner li { 
+	list-style: none; 
+}
+.banner ul li { 
+	float: left;
+	padding: 0;
+	margin: 0;
+	height: 200px;
+	background-color: #ddd; 
+} 
+
+/* 区域通用样式
+----------------------------------*/ 
+.section-wrap {
+	padding: 0 5px;
+	margin-bottom: 30px;
+	text-align: center;
+} 
+.section-title {
+	position: relative;
+	z-index: 0;
+	font-size: 16px;
+	height: 24px;
+	line-height: 24px;
+	padding-left: 5px;
+	border-left: 3px solid #EB767E;
+	color: #B79B9D;
+	text-align: left;
+}
+.selling-wrap {
+	padding-bottom: 50px;
+}
+.preSell-wrap .section-title,
+.selling-wrap .section-title {
+	height: 32px;
+	line-height: 32px;
+	padding-left: 10px;
+	background-color: #F9BFC3;
+	color: #C72B2B;
+}
+.section-title a {
+	position: absolute;
+	z-index: 10;
+	height: 32px;
+	line-height: 32px;
+	color: #B53B44;
+	right: 0;
+	text-align: center;
+	text-decoration: none;
+}
+.section-title .sort {
+	width: 32px;
+	right: 70px;
+}
+.section-title .showAll {
+	font-size: 14px;
+	right: 10px;
+}
+.section-tab {
+	overflow: hidden;
+	border-top: 1px solid #EEE;
+}
+.section-tab a {
+	float: left;
+	padding: 5px 0;
+	font-size: 14px;
+	text-align: center;
+	border-bottom: 1px solid #EEE;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #7F7E7E;
+}
+.section-time {
+	padding: 10px;
+	overflow: hidden;
+	background-color: #FDF0F0;
+}
+.section-time a {
+	float: left;
+	color: #9A8484;
+	padding: 0 10px;
+	font-size: 12px;
+	text-decoration: none;
+	text-align: center;
+}
+.section-time a span {
+	display: block;
+}
+.section-time a.currTime {
+	color: #B53B44;
+}
+
+.section-tab a.curTab {
+	border-color: #EB767E;
+	color: #EB767E;
+}
+.discount-wrap .section-tab a {
+	width: 20%;
+} 
+.hot-wrap .section-tab a {
+	width: 25%;
+} 
+.section-content {
+	padding-top: 10px;
+}
+.preSell-wrap .section-content,
+.selling-wrap .section-content {
+    border-top: 1px solid #eee;	
+}
+.section-list {
+	overflow: hidden;
+}
+.section-list a {
+	float: left;
+	width: 50%;
+	margin-bottom: 10px;
+	text-decoration: none;
+}
+
+.preSell-wrap .section-list a,
+.selling-wrap .section-list a {
+	width: 100%;
+}
+.section-list a:hover {
+	text-decoration: none;
+}
+.list-item-wrap {
+	padding: 5px;
+}
+.list-item {
+	text-align: center;
+	padding: 10px;
+	border: 1px solid #eee;
+	box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+.list-item img {
+	width: 100%;
+	height: 150px;
+}
+.preSell-wrap .section-content a img,
+.selling-wrap .section-content a img {
+	width: 200px;
+}
+.list-item p {
+	color: #505050;
+	text-align: center;
+}
+.item-title {
+	padding-top: 15px;
+	font-size: 16px;
+}
+.list-item .btn {
+	padding: 1px 12px;
+}
+
+.list-item p strong {
+	font-weight: normal;
+	color: #EB767E;
+}
+.currPrice {
+	color: #d43f3a;
+	font-size: 20px;
+}
+.actualPrice {
+	font-size: 12px;
+	color: #aaa;
+	text-decoration: line-through;
+}
+.disc {
+	background-color: #EB767E;
+	color: #fff;
+	font-size: 12px;
+	padding: 0 3px;
+}
+.list-item .item-want {
+	color: #aaa;
+	font-size: 12px;
+}
+.loadMore-wrap {
+	text-align: center;
+}
+.loadMore {
+	display: block;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	text-align: center;
+	font-size: 14px;
+	padding: 5px 0;
+	color: #B79B9D;
+	letter-spacing: 2px;
+	text-decoration: none;
+}
+.loadMore:hover {
+	background-color: #FCD0D3;
+	text-decoration: none;
+	color: #fff;
+}
+.loadMore-wrap img {
+	width: 60px;
+	height: 18px;
+}
+.waitIcon {
+	width: 24px;
+	height: 24px;
+	margin: 5px;
+}
+
+/* 分类列表样式
+--------------------------------------*/
+.class-wrap {
+	position: fixed;
+	z-index: 10000000;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .3);
+}
+.class-box {
+	position: absolute;
+	z-index: 1000000000;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 150px;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .7);
+	-webkit-transform: translate(-150px, 0);
+	-moz-transform: translate(-150px, 0);
+	-o-transform: translate(-150px, 0);
+	transform: translate(-150px, 0);
+}
+.showClassBox {
+	-webkit-transform: translate(0, 0);
+	-moz-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+.menu-wrap {
+	padding: 10px;
+	padding-top: 50px;
+}
+.mainMenu {
+	color: #FFF;
+	font-size: 16px;
+	font-weight: normal;
+	padding-top: 10px;
+}
+.mainMenu a {
+	color: #FFF;
+	text-decoration: none;
+}
+.subMenu {
+	padding-left: 20px;
+}
+.subMenu a {
+	display: block;
+	padding: 0 5px;
+	color: #ddd;
+}
