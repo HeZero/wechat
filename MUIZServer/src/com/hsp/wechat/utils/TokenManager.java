@@ -30,7 +30,6 @@ public class TokenManager implements ITokenManager {
 		}else{
 		 String token =	WeChatConnectionUtil.getAccessToken().get("access_token");
 		 redisClientTemplate.set(accessToken, token);
-		 redisClientTemplate.expire(accessToken, 7200);
 		 return token;
 		}
 	}
@@ -49,5 +48,6 @@ public class TokenManager implements ITokenManager {
 	@Override
 	public void setToken(String token){
 		redisClientTemplate.set(accessToken, token);
+		redisClientTemplate.expire(accessToken, 7200);
 	}
 }

@@ -1,13 +1,18 @@
 package com.hsp.wechat.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.PropertyException;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hsp.core.utils.FastJsonUtils;
 import com.hsp.core.utils.PropertiesReader;
 import com.hsp.core.utils.SHA1Util;
+import com.hsp.core.utils.Xml2JsonUtil;
 import com.hsp.wechat.constant.AccessConfig;
 import com.hsp.wechat.model.Message;
 import com.hsp.wechat.utils.ITokenManager;
@@ -134,27 +140,36 @@ public class WeChatController {
 	 * @param response
 	 */
 	@RequestMapping(value="/access",method=RequestMethod.POST)
-	public void getMsg(HttpServletRequest request,HttpServletResponse response,
-			@RequestParam("ToUserName")String username,
-			@RequestParam("FromUserName")String openId,
-			@RequestParam("CreateTime")String createTime,
-			@RequestParam("MsgType")String msgType,
-			@RequestParam("Content")String content,
-			@RequestParam("MsgId")String msgId){
+	public void getMsg(HttpServletRequest request,HttpServletResponse response){
 		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream)request.getInputStream()));
+		      String line = null;
+		      StringBuilder sb = new StringBuilder();
+		      while((line = br.readLine())!=null){
+		       sb.append(line);
+		      }
+			String xml=sb.toString();
+			String json=Xml2JsonUtil.xml2json(xml);
+			Map<String,Map<String,String>> post=FastJsonUtils.stringToCollect(json);
+			Map<String,String> postMsg=post.get("xml");
+			
 			Map<String,String> map=new HashMap<String,String>();
-			map.put("key", PropertiesReader.getProperties("AI", "apiKey"));
-			map.put("info", content);
-			map.put("user", openId);
-			Map<String,String> result=WeChatConnectionUtil.sendHttpRequest(PropertiesReader.getProperties("AI", "url"), map);
+			map.put("key", PropertiesReader.getProperties("AI.properties", "apiKey"));
+			map.put("info", postMsg.get("Content")+"");
+			map.put("user", postMsg.get("ToUserName")+"");
+			Map<String,String> result=WeChatConnectionUtil.sendHttpRequest(PropertiesReader.getProperties("AI.properties", "url"), map);
 			String reply= result.get("text");
-			Message msg=new Message();
-			msg.setContent(reply);
-			msg.setCreateTime("");
-			msg.setFromUserName(username);
-			msg.setToUserName(openId);
-			msg.setMsgType("text");
-			response.getWriter().write(FastJsonUtils.toJSONString(msg));
+			 StringBuffer str = new StringBuffer();  
+	            str.append("<xml>");  
+	            str.append("<ToUserName><![CDATA[" + postMsg.get("FromUserName") + "]]></ToUserName>");  
+	            str.append("<FromUserName><![CDATA[" + postMsg.get("ToUserName") + "]]></FromUserName>");  
+	            str.append("<CreateTime>" + new Date().toString() + "</CreateTime>");  
+	            str.append("<MsgType><![CDATA[" + postMsg.get("MsgType") + "]]></MsgType>");  
+	            str.append("<Content><![CDATA[" + reply + "]]></Content>");  
+	            str.append("</xml>");
+	            response.setHeader("Access-Control-Allow-Origin", "*");  //解决跨域问题
+	    		response.setContentType("text/html;charset=utf-8");
+			response.getWriter().write(str.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -164,8 +179,24 @@ public class WeChatController {
 	
 	public void getOpenId() throws IOException, PropertyException{
 		String accessToken=tokenManager.getAccessToken();
-		String url=PropertiesReader.getProperties("wechat", "url_getOpenId").concat("access_token=").concat(accessToken);
+		String url=PropertiesReader.getProperties("wechat.properties", "url_getOpenId").concat("access_token=").concat(accessToken);
 		WeChatConnectionUtil.sendGetRequest(url, null);
+	}
+	
+	/**
+	 * ajax输出json字符串方法
+	 * @param response
+	 * @param data
+	 */
+	protected void writeJsonData(HttpServletResponse response,Object data){
+		response.setHeader("Access-Control-Allow-Origin", "*");  //解决跨域问题
+		response.setContentType("text/html;charset=utf-8");
+		try {
+			response.getWriter().print(FastJsonUtils.toJSONString(data));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	class SpellComparator implements Comparator<Object>{
