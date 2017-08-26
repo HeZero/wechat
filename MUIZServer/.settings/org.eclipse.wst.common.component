@@ -4,6 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
 		<property name="context-root" value="MUIZServer"/>
-		<property name="java-output-path" value="/MUIZServer/build/classes"/>
+        <property name="java-output-path" value="/MUIZServer/build/classes"/>
 	</wb-module>
 </project-modules>

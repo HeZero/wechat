@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.PropertyException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.hsp.core.utils.FastJsonUtils;
+import com.hsp.core.utils.PropertiesReader;
 import com.hsp.core.utils.SHA1Util;
 import com.hsp.wechat.constant.AccessConfig;
+import com.hsp.wechat.model.Message;
 import com.hsp.wechat.utils.ITokenManager;
 import com.hsp.wechat.utils.WeChatConnectionUtil;
 
@@ -124,6 +126,46 @@ public class WeChatController {
 			log.info(">>>>>>>>>>>>接入失败<<<<<<<<<<<<<<<");
 		}
 		
+	}
+	
+	/**
+	 * 接收消息及获取用户信息
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/access",method=RequestMethod.POST)
+	public void getMsg(HttpServletRequest request,HttpServletResponse response,
+			@RequestParam("ToUserName")String username,
+			@RequestParam("FromUserName")String openId,
+			@RequestParam("CreateTime")String createTime,
+			@RequestParam("MsgType")String msgType,
+			@RequestParam("Content")String content,
+			@RequestParam("MsgId")String msgId){
+		try {
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("key", PropertiesReader.getProperties("AI", "apiKey"));
+			map.put("info", content);
+			map.put("user", openId);
+			Map<String,String> result=WeChatConnectionUtil.sendHttpRequest(PropertiesReader.getProperties("AI", "url"), map);
+			String reply= result.get("text");
+			Message msg=new Message();
+			msg.setContent(reply);
+			msg.setCreateTime("");
+			msg.setFromUserName(username);
+			msg.setToUserName(openId);
+			msg.setMsgType("text");
+			response.getWriter().write(FastJsonUtils.toJSONString(msg));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void getOpenId() throws IOException, PropertyException{
+		String accessToken=tokenManager.getAccessToken();
+		String url=PropertiesReader.getProperties("wechat", "url_getOpenId").concat("access_token=").concat(accessToken);
+		WeChatConnectionUtil.sendGetRequest(url, null);
 	}
 	
 	class SpellComparator implements Comparator<Object>{
