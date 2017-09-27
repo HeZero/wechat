@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hsp.core.utils.FastJsonUtils;
 import com.hsp.core.utils.PropertiesReader;
 import com.hsp.core.utils.SHA1Util;
+import com.hsp.core.utils.XMLOperator;
 import com.hsp.core.utils.Xml2JsonUtil;
 import com.hsp.wechat.constant.AccessConfig;
 import com.hsp.wechat.model.Message;
@@ -149,16 +150,19 @@ public class WeChatController {
 		       sb.append(line);
 		      }
 			String xml=sb.toString();
-			String json=Xml2JsonUtil.xml2json(xml);
-			Map<String,Map<String,String>> post=FastJsonUtils.stringToCollect(json);
-			Map<String,String> postMsg=post.get("xml");
+			Map<String,String> postMsg=XMLOperator.xml2Map(xml);
 			
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("key", PropertiesReader.getProperties("AI.properties", "apiKey"));
-			map.put("info", postMsg.get("Content")+"");
-			map.put("user", postMsg.get("ToUserName")+"");
+			map.put("info", postMsg.get("Content"));
+			map.put("user", postMsg.get("ToUserName"));
 			Map<String,String> result=WeChatConnectionUtil.sendHttpRequest(PropertiesReader.getProperties("AI.properties", "url"), map);
 			String reply= result.get("text");
+			/*map.clear();
+			map.put("Content", reply);
+			map.put("CreateTime", new Date().toString());
+			map.put("FromUserName", postMsg.get("ToUserName"));
+			map.put("ToUserName", postMsg.get("FromUserName"));*/
 			 StringBuffer str = new StringBuffer();  
 	            str.append("<xml>");  
 	            str.append("<ToUserName><![CDATA[" + postMsg.get("FromUserName") + "]]></ToUserName>");  
@@ -167,9 +171,12 @@ public class WeChatController {
 	            str.append("<MsgType><![CDATA[" + postMsg.get("MsgType") + "]]></MsgType>");  
 	            str.append("<Content><![CDATA[" + reply + "]]></Content>");  
 	            str.append("</xml>");
+			postMsg.put("Content", reply);
 	            response.setHeader("Access-Control-Allow-Origin", "*");  //解决跨域问题
 	    		response.setContentType("text/html;charset=utf-8");
-			response.getWriter().write(str.toString());
+	    		//String str=XMLOperator.map2WeChatMsg(map);
+	    		log.info(str);
+		        response.getWriter().write(str.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

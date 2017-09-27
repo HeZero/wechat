@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value="/api")
+@RequestMapping(value="/result")
 public class TestController {
 
-	@RequestMapping(value="/test",method=RequestMethod.GET)
+	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public void test(HttpServletRequest request,HttpServletResponse response){
 		try {
+			String data=request.getParameter("result");
+			System.out.println("[接收数据]>>>>>>>"+data);
 			response.getWriter().print("success");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
